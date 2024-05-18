@@ -1,0 +1,24 @@
+#!/usr/bin/python3
+
+"""
+Defines base models fo the entire project
+
+"""
+
+from uuid import uuid4
+from datetime import datetime
+
+class BaseModel:
+    """
+
+
+    """
+
+    def __init__(self):
+        """
+        will create public artributes
+
+        """
+
+        self.id = str(uuid4())
+        self.created_at = 
