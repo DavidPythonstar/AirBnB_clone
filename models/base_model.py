@@ -5,7 +5,7 @@ Define the base model for the entire project.
 
 from uuid import uuid4
 from datetime import datetime
-
+import models
 
 class BaseModel:
     """
@@ -30,12 +30,15 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
+            
+        models.storage.new(self)
 
     def save(self):
         """
         Update the update time.
         """
         self.updated_at = datetime.utcnow()
+        models.storage.save()
 
     def to_dict(self):
         """
