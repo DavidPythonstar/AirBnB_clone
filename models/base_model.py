@@ -12,13 +12,24 @@ class BaseModel:
     Base model class with id, creation, and update timestamps.
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """
         Initialize the class and create the needed public attributes.
         """
-        self.id = str(uuid4())
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
+        time_format = "%Y-%m-%dT%H:%M:%S.%f"
+
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == "__class__":
+                    continue
+                elif key in {"updated_at", "created_at"}:
+                    setattr(self, key, datetime.strptime(value, time_format))
+                else:
+                    setattr(self, key, value)
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.utcnow()
+            self.updated_at = datetime.utcnow()
 
     def save(self):
         """
@@ -37,9 +48,3 @@ class BaseModel:
 
         return dic
 
-    def __str__(self):
-        """
-        Create the string representation of the class.
-        """
-        name = self.__class__.__name__
-        return f"[{name}] ({self.id}) {self.__dict__}"
